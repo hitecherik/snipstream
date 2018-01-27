@@ -15,8 +15,18 @@ class TimeStamp {
 
 function parseXML(xml, callback) {
   parseString(xml, (err, result) => {
-    if (err) throw err;
-    callback(result.transcript.text.map(t => new TimeStamp(t)));
+
+    try {
+
+      callback(result.transcript.text.map(t => new TimeStamp(t)));
+
+    } catch (err) {
+
+      console.log(err.message);
+
+    }
+
+    
   });
 }
 
