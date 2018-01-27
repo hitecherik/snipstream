@@ -25,8 +25,9 @@ app.get("/:videoid", (req, res) => {
         });
       }
 
-      postAzure(documentJSON, result => {
+      postAzure(req.params.videoid, documentJSON, result => {
         // res.send(JSON.parse(keywords));
+        res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(getTimestamps(ts, interpolateKeywords(JSON.parse(result).documents))));
       });
     });
