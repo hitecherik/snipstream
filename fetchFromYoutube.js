@@ -9,7 +9,7 @@ function getXMLFromYoutube(id) {
       return "error";
     }
 
-    console.log(body);
+    return body;
 
 
   });
