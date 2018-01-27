@@ -7,17 +7,14 @@ function getXMLFromYoutube(id, callback, autogen=false) {
 
     if (err) {
       console.log(err);
-      callback("error");
+      callback(null);
     }
 
     if (body.trim().length == 0) {
-
       getXMLFromYoutube(id, callback, true);
-
     }
 
     callback(body);
-
   });
 
 }
