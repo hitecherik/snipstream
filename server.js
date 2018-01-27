@@ -23,7 +23,7 @@ app.get("/:videoid", (req, res) => {
         documents: []
       }
 
-      for (i = 0; i < sentences.length; i++) {
+      for (let i = 0; i < sentences.length; i++) {
 
         documentJSON.documents.push({
           language: "en",
