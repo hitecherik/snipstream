@@ -11,6 +11,10 @@ class TimeStamp {
   get end() {
     return this.start + this.duration;
   }
+
+  keywordInText(keyword) {
+    return this.text.indexOf(keyword) !== -1;
+  }
 }
 
 function parseXML(xml, callback) {
