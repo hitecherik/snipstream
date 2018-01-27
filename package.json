@@ -17,9 +17,10 @@
   },
   "homepage": "https://github.com/hitecherik/video-summariser#readme",
   "dependencies": {
-    "xml2js": "^0.4.19",
+    "better-sqlite3": "^4.1.0",
     "express": "^4.16.2",
     "nodemon": "^1.14.11",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "xml2js": "^0.4.19"
   }
 }
