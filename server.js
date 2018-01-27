@@ -11,38 +11,21 @@ app.get("/:videoid", (req, res) => {
 
     parseXML(xml, ts => {
 
-      let onlyText = ts.reduce((acc, curV) => {
-
-        return `${acc} ${curV.text}`;
-
-      }, "");
-
+      let onlyText = ts.reduce((acc, curV) => `${acc} ${curV.text}`, "");
       let sentences = splitBySentence(onlyText);
-
-      let documentJSON = {
-        documents: []
-      }
+      let documentJSON = {documents: []};
 
       for (i = 0; i < sentences.length; i++) {
-
         documentJSON.documents.push({
           language: "en",
           id: i + 1,
           text: sentences[i]
-        })
-
+        });
       }
 
-      postAzure(documentJSON, (keywords) => {
-
-        res.send(JSON.parse(keywords)); 
-
-      });
-
+      postAzure(documentJSON, keywords => res.send(JSON.parse(keywords)));
     });
-
   });
-    
-})
+});
 
 app.listen(3000, () => console.log("Server on port 3000"));
