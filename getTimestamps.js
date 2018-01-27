@@ -1,5 +1,4 @@
 const MAX_TIME = 20;
-const SENTENCE_TERMINATORS = ".;?!";
 const SENTENCE_TERMINATORS = /[.;\?!]/;
 
 class StartEnd {
@@ -13,7 +12,7 @@ class StartEnd {
   }
 }
 
-function getTimestamps(timestamps, keywords, callback) {
+function getTimestamps(timestamps, keywords) {
   let results       = [],
       totalDuration = 0;
   
@@ -23,7 +22,7 @@ function getTimestamps(timestamps, keywords, callback) {
     let index              = -1,
         includedTimestamps = [];
 
-    for (let j = 0; j < timestamps.length; timestamps++) {
+    for (let j = 0; j < timestamps.length; j++) {
       if (timestamps[j].keywordInText(keywords[i])) {
         index = j;
         break;
@@ -32,13 +31,13 @@ function getTimestamps(timestamps, keywords, callback) {
 
     if (index === -1) continue;
     
-    includedTimestamps.push(timestamps[j]);
-    j++;
+    includedTimestamps.push(timestamps[index]);
+    index++;
 
-    while (j < timestamps.length) {
-      includedTimestamps.push(timestamps[j]);
-      if (SENTENCE_TERMINATORS.test(timestamps[j].text) break;
-      j++;
+    while (index < timestamps.length) {
+      includedTimestamps.push(timestamps[index]);
+      if (SENTENCE_TERMINATORS.test(timestamps[index].text)) break;
+      index++;
     }
 
     results.push(new StartEnd(includedTimestamps));
@@ -48,4 +47,4 @@ function getTimestamps(timestamps, keywords, callback) {
   return results;
 }
 
-
+module.exports = getTimestamps;

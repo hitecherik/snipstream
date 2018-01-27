@@ -3,6 +3,8 @@ const fetch = require('./fetchFromYoutube.js');
 const parseXML = require('./parseXML.js');
 const postAzure = require('./postToAzure.js');
 const splitBySentence = require('./splitBySentence.js');
+const interpolateKeywords = require('./interpolateKeywords.js');
+const getTimestamps = require('./getTimestamps.js');
 const app = express();
 
 app.get("/:videoid", (req, res) => {
@@ -23,7 +25,10 @@ app.get("/:videoid", (req, res) => {
         });
       }
 
-      postAzure(documentJSON, keywords => res.send(JSON.parse(keywords)));
+      postAzure(documentJSON, result => {
+        // res.send(JSON.parse(keywords));
+        res.send(JSON.stringify(getTimestamps(ts, interpolateKeywords(JSON.parse(result).documents))));
+      });
     });
   });
 });
