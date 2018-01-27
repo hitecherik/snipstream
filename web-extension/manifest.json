@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "snipstream",
 
-  "default_locale": "en",
+  "name": "Snipstream",
+  "version": "1.0.0",
 
-  "browser_action": {
+  "page_action": {
     "default_icon": {
       "16": "media/icon16.png",
       "24": "media/icon24.png",
@@ -12,7 +12,12 @@
     }
   },
 
+  "background": {
+    "scripts": ["background.js"]
+  },
+
   "permissions": [
-    "activeTab"
+    "declarativeContent",
+    "tabs"
   ]
 }
