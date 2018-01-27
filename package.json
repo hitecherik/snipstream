@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/hitecherik/video-summariser/issues"
   },
-  "homepage": "https://github.com/hitecherik/video-summariser#readme"
+  "homepage": "https://github.com/hitecherik/video-summariser#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "nodemon": "^1.14.11",
+    "request": "^2.83.0"
+  }
 }
