@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/hitecherik/video-summariser/issues"
   },
-  "homepage": "https://github.com/hitecherik/video-summariser#readme"
+  "homepage": "https://github.com/hitecherik/video-summariser#readme",
+  "dependencies": {
+    "xml2js": "^0.4.19"
+  }
 }
