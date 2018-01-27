@@ -18,7 +18,7 @@ function Loop(array) {
   };
 };
 
-chrome.runtime.onMessage.addListener(function(data, _, _) {
+chrome.runtime.onMessage.addListener(function(data) {
   var video = document.getElementsByTagName('video')[0];
   var loop = new Loop(data.response);
 

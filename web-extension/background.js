@@ -4,29 +4,21 @@ var BASE_URL = 'https://www.youtube.com/watch?v=';
 var API_URL = 'http://snipstream.eyechess.org/'
 
 function Requester() {
-  this.request;
-  this.response;
+  this._request;
+  this._response;
 
   this.get = function(url, func) {
-    this.request = new XMLHttpRequest();
-    httpRequest.onreadystatechange = this._ready;
+    this._request = new XMLHttpRequest();
+    this._request.onreadystatechange = function() {
+      if (this._request.readyState === XMLHttpRequest.DONE &&
+          this._request.status === 200) {
+        this._response = this._request.responseText;
+        func(this._response);
+      }
+    }.bind(this);
 
-    this.request.open('GET', url, true);
-    this.request.send();
-
-    return this;
-  };
-
-  this._ready = function() {
-    if (this.request.readyState === XMLHttpRequest.DONE &&
-        this.request.status === 200) {
-      this.response = this.request.responseText;
-    }
-  };
-
-  this.done = function(func) {
-    func(this.response);
-    return this;
+    this._request.open('GET', url, true);
+    this._request.send();
   };
 }
 
@@ -48,8 +40,8 @@ chrome.runtime.onInstalled.addListener(function() {
     var videoId = tab.url.replace(BASE_URL, '');
     var requester = new Requester();
 
-    requester.get(API_URL + videoId).done(function(response) {
-      chrome.tabs.sendMessage(tab.id, { response: response }, function() {});
+    requester.get(API_URL + videoId, function(response) {
+      chrome.tabs.sendMessage(tab.id, { response: JSON.parse(response) });
     });
   });
 });
