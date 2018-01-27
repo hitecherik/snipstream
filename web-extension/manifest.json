@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "snipstream",
+
+  "default_locale": "en",
+
+  "browser_action": {
+    "default_icon": {
+      "16": "media/icon16.png",
+      "24": "media/icon24.png",
+      "32": "media/icon32.png"
+    }
+  },
+
+  "permissions": [
+    "activeTab"
+  ]
+}
