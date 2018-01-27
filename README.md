@@ -1,3 +1,3 @@
-# Video Summariser
+# Snipstream
 
 A project at ICHack18.
