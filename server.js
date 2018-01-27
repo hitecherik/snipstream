@@ -17,7 +17,8 @@ app.get("/:videoid", (req, res) => {
       let sentences = splitBySentence(onlyText);
       let documentJSON = {documents: []};
 
-      for (i = 0; i < sentences.length; i++) {
+      for (let i = 0; i < sentences.length; i++) {
+
         documentJSON.documents.push({
           language: "en",
           id: i + 1,
