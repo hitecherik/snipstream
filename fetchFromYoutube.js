@@ -1,16 +1,15 @@
 const request = require('request');
 
-function getXMLFromYoutube(id) {
+function getXMLFromYoutube(id, callback) {
 
   request.get('http://video.google.com/timedtext?lang=en&v=' + id, (err, res, body) => {
 
     if (err) {
       console.log(err);
-      return "error";
+      callback("error");
     }
 
-    return body;
-
+    callback(body);
 
   });
 
