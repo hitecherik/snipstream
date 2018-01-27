@@ -1,6 +1,8 @@
 const express = require('express');
 const fetch = require('./fetchFromYoutube.js');
 const parseXML = require('./parseXML.js');
+const postAzure = require('./postToAzure.js');
+const splitBySentence = require('./splitBySentence.js');
 const app = express();
 
 app.get("/:videoid", (req, res) => {
@@ -15,36 +17,27 @@ app.get("/:videoid", (req, res) => {
 
       }, "");
 
-      let nrSplits = (Math.floor(onlyText.length / 5000));
+      let sentences = splitBySentence(onlyText);
 
-      let textToSend = [];
+      let documentJSON = {
+        documents: []
+      }
 
-      if (nrSplits === 0) {
+      for (i = 0; i < sentences.length; i++) {
 
-        textToSend.push(onlyText);
-
-      } else {
-        
-        let words = onlyText.split(" ");
-        let characterLimit = onlyText.length / (nrSplits + 1);
-
-        let k = 0;
-
-        for (i = 0; i <= nrSplits; i++){
-          textToSend.push("");
-
-          while (textToSend[i].length < characterLimit) {
-            textToSend[i] += words[k] + " ";
-            k++;
-
-          }
-
-        }
-
+        documentJSON.documents.push({
+          language: "en",
+          id: i + 1,
+          text: sentences[i]
+        })
 
       }
 
-      res.send(textToSend[0]);
+      postAzure(documentJSON, (keywords) => {
+
+        res.send(JSON.parse(keywords)); 
+
+      });
 
     });
 
