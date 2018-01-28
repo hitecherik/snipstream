@@ -1,0 +1,47 @@
+ytd-app {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transition: transform 0.5s;
+}
+
+body.snipstream ytd-app {
+  transform: scale(0.8);
+}
+
+body:after {
+  content: "";
+
+  position: fixed;
+  top: 0; bottom: 0; left: 0; right: 0;
+
+  background: #000;
+  z-index: 2021;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s;
+}
+
+body.snipstream {
+  overflow: hidden;
+}
+
+body.snipstream ytd-app {
+  filter: blur(2px);
+}
+
+body.snipstream:after {
+  opacity: 0.8;
+  visibility: visible;
+}
+
+iframe {
+  position: fixed;
+  top: 50%; left: 50%;
+  z-index: 999999;
+  display: none;
+}
+
+body.snipstream iframe {
+  display: block;
+}
