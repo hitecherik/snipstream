@@ -4,9 +4,9 @@ const parseString          = require("xml2js").parseString,
 
 class Sentence {
   constructor(phrases, content) {
-    this.start   = phrases[0].$.start;
-    this.end     = phrases[phrases.length-1].$.start + phrases[phrases.length-1].$.dur;
-    this.content = content.toLowerCase();
+    this.start = parseFloat(phrases[0].$.start);
+    this.end   = parseFloat(phrases[phrases.length-1].$.start) + parseFloat(phrases[phrases.length-1].$.dur);
+    this.text  = content.toLowerCase();
   }
 
   get duration() {
@@ -55,7 +55,6 @@ function parseXML(xml, callback) {
 
       callback(sentences);
     } catch (err) {
-      throw err;
       console.log(err.message);
     }
   });

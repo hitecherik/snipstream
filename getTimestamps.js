@@ -1,10 +1,10 @@
 const MAX_TIME = 20;
-const SENTENCE_TERMINATORS = /[.;\?!]/;
+const SENTENCE_TERMINATORS = /[.;\?\!]/;
 
 class StartEnd {
-  constructor(timestamps) {
-    this.start = timestamps[0].start;
-    this.end   = timestamps[timestamps.length-1].end;
+  constructor(sentence) {
+    this.start = sentence.start;
+    this.end   = sentence.end;
   }
 
   get duration() {
@@ -12,46 +12,47 @@ class StartEnd {
   }
 }
 
-function getTimestamps(timestamps, keywords) {
-  let results       = [],
-      totalDuration = 0;
-  
-  for (let i = 0; i < keywords.length; i++) {
-    if (totalDuration > MAX_TIME) break;
+class SentenceWithWeight {
 
-    let index              = -1,
-        includedTimestamps = [];
-
-    for (let j = 0; j < timestamps.length; j++) {
-      if (timestamps[j].keywordInText(keywords[i])) {
-        index = j;
-        break;
-      }
-    }
-
-    if (index === -1) continue;
-    
-    includedTimestamps.push(timestamps[index]);
-    index++;
-
-    while (index < timestamps.length) {
-      includedTimestamps.push(timestamps[index]);
-      if (includedTimestamps.length > 3) break;
-      if (includedTimestamps.reduce((acc, cur) => acc + cur.duration, 0) > 9) break;
-      if (SENTENCE_TERMINATORS.test(timestamps[index].text)) break;
-      if (index + 1 < timestamps.length) {
-        if (timestamps[index + 1].start > timestamps[index].end + 3) {
-          break;
-        }
-      }
-      index++;
-    }
-
-    results.push(new StartEnd(includedTimestamps));
-    totalDuration += results[results.length-1].duration;
+  constructor(sentence, weight) {
+    this.start    = sentence.start;
+    this.end      = sentence.end;
+    this.duration = sentence.duration;
+    this.weight   = weight / this.duration;
   }
+
+}
+
+function getTimestamps(sentences, weights) {
   
-  return results;
+  sentencesWithWeight = [];
+
+  for (let i = 0; i < weights.length; i++) {
+
+    sentencesWithWeight.push(new SentenceWithWeight(sentences[i], weights[i]));
+
+  }
+
+  sentencesWithWeight.sort((s1, s2) => {
+
+    if (s1.weight < s2.weight) return -1;
+    else if (s1.weight > s2.weight) return 1;
+    else return 0;
+
+  });
+
+  let totalDuration = 0;
+  let output = [];
+
+  while (totalDuration < MAX_TIME) {
+
+    output.push(new StartEnd(sentencesWithWeight.pop()));
+    totalDuration += output[output.length - 1].duration;
+
+  }
+
+  return output;
+
 }
 
 module.exports = getTimestamps;

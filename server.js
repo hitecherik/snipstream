@@ -2,7 +2,6 @@ const express = require('express');
 const fetch = require('./fetchFromYoutube.js');
 const parseXML = require('./parseXML.js');
 const postAzure = require('./postToAzure.js');
-const splitBySentence = require('./splitBySentence.js');
 const interpolateKeywords = require('./interpolateKeywords.js');
 const getTimestamps = require('./getTimestamps.js');
 const app = express();
@@ -15,8 +14,7 @@ app.get("/:videoid", (req, res) => {
 
     parseXML(xml, ts => {
 
-      let onlyText = ts.reduce((acc, curV) => `${acc} ${curV.text}`, "");
-      let sentences = splitBySentence(onlyText);
+      let sentences = ts.map(val => val.text);
       let documentJSON = {documents: []};
 
       for (let i = 0; i < sentences.length; i++) {
