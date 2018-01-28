@@ -3,6 +3,12 @@
 var BASE_URL = 'https://www.youtube.com/watch?v=';
 var API_URL = 'http://snipstream.eyechess.org/'
 
+var greenIcons = {
+  16: "media/active/icon16.png",
+  24: "media/active/icon24.png",
+  32: "media/active/icon32.png"
+};
+
 function Requester() {
   this._request;
   this._response;
@@ -38,6 +44,8 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.pageAction.onClicked.addListener(function(tab) {
+    chrome.pageAction.setIcon({ path : greenIcons, tabId : tab.id});
+
     chrome.tabs.sendMessage(tab.id, {
       type: 'name',
     }, function(name) {
