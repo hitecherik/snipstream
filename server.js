@@ -28,6 +28,7 @@ app.get("/:videoid", (req, res) => {
 
       postAzure(req.params.videoid, documentJSON, result => {
         // res.send(JSON.parse(keywords));
+        res.set('Access-Control-Allow-Origin', '*');
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(getTimestamps(ts, interpolateKeywords(JSON.parse(result).documents))));
       });
