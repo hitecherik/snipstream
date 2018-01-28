@@ -38,34 +38,17 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.pageAction.onClicked.addListener(function(tab) {
-    chrome.runtime.getPackageDirectoryEntry(function(root) {
-      root.getFile("toast.html", {}, function(entry) {
-        entry.file(function(file) {
-          var reader = new FileReader();
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'name',
+    }, function(name) {
+      var videoId = tab.url.replace(BASE_URL, '');
+      var requester = new Requester();
 
-          reader.onloadend = function() {
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'toast',
-              content: this.result
-            });
-
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'name',
-            }, function(name) {
-              var videoId = tab.url.replace(BASE_URL, '');
-              var requester = new Requester();
-
-              requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
-                            function(response) {
-                chrome.tabs.sendMessage(tab.id, {
-                  type: 'trailer',
-                  response: JSON.parse(response)
-                });
-              });
-            });
-          };
-
-          reader.readAsText(file);
+      requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
+                    function(response) {
+        chrome.tabs.sendMessage(tab.id, {
+          type: 'trailer',
+          response: JSON.parse(response)
         });
       });
     });
