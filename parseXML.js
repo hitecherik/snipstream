@@ -3,7 +3,7 @@ const parseString = require("xml2js").parseString,
 
 class TimeStamp {
   constructor(obj) {
-    this.text     = obj._.replace("\n", " ");;
+    this.text     = obj._.replace("\n", " ").toLowerCase();
     this.start    = parseFloat(obj.$.start);
     this.duration = parseFloat(obj.$.dur);
   }

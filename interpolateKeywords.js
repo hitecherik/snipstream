@@ -1,7 +1,7 @@
 
 
 function interpolateKeywords(keyPhrases) {
-  let allKeyPhrases = keyPhrases.reduce((acc, cur) => acc.concat(cur.keyPhrases), []),
+  let allKeyPhrases = keyPhrases.reduce((acc, cur) => acc.concat(cur.keyPhrases), []).map(p => p.toLowerCase()),
       occurences    = {},
       keywords      = [];
 
