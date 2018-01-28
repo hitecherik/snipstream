@@ -36,6 +36,8 @@ function getTimestamps(timestamps, keywords) {
 
     while (index < timestamps.length) {
       includedTimestamps.push(timestamps[index]);
+      if (includedTimestamps.length > 3) break;
+      if (includedTimestamps.reduce((acc, cur) => acc + cur.duration, 0) > 9) break;
       if (SENTENCE_TERMINATORS.test(timestamps[index].text)) break;
       if (index + 1 < timestamps.length) {
         if (timestamps[index + 1].start > timestamps[index].end + 3) {
