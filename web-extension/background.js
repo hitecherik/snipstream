@@ -12,6 +12,7 @@ function Requester() {
     this._request.onreadystatechange = function() {
       if (this._request.readyState === XMLHttpRequest.DONE &&
           this._request.status === 200) {
+            console.log(this._request.responseText);
         this._response = this._request.responseText;
         func(this._response);
       }
@@ -37,11 +38,36 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.pageAction.onClicked.addListener(function(tab) {
-    var videoId = tab.url.replace(BASE_URL, '');
-    var requester = new Requester();
+    chrome.runtime.getPackageDirectoryEntry(function(root) {
+      root.getFile("toast.html", {}, function(entry) {
+        entry.file(function(file) {
+          var reader = new FileReader();
 
-    requester.get(API_URL + videoId, function(response) {
-      chrome.tabs.sendMessage(tab.id, { response: JSON.parse(response) });
+          reader.onloadend = function() {
+            chrome.tabs.sendMessage(tab.id, {
+              type: 'toast',
+              content: this.result
+            });
+
+            chrome.tabs.sendMessage(tab.id, {
+              type: 'name',
+            }, function(name) {
+              var videoId = tab.url.replace(BASE_URL, '');
+              var requester = new Requester();
+
+              requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
+                            function(response) {
+                chrome.tabs.sendMessage(tab.id, {
+                  type: 'trailer',
+                  response: JSON.parse(response)
+                });
+              });
+            });
+          };
+
+          reader.readAsText(file);
+        });
+      });
     });
   });
 });
