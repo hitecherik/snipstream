@@ -7,6 +7,8 @@ const interpolateKeywords = require('./interpolateKeywords.js');
 const getTimestamps = require('./getTimestamps.js');
 const app = express();
 
+app.use(express.static("download"));
+
 app.get("/:videoid", (req, res) => {
     
   fetch(req.params.videoid, (xml) => {
