@@ -1,17 +1,16 @@
 const request = require('request');
 
-function getXMLFromYoutube(id, callback, autogen=false) {
-  let lang = 'en' + (autogen ? '&track=asr' : '');
+function getXMLFromYoutube(id, callback, name="") {
 
-  request.get(`http://video.google.com/timedtext?lang=${lang}&v=${id}`, (err, res, body) => {
+  let nameParam = (name.length > 0 ? `&name=${name}` : '').replace(" ", "+");
+
+  console.log(`http://video.google.com/timedtext?lang=en&v=${id}${nameParam}`);
+
+  request.get(`http://video.google.com/timedtext?lang=en&v=${id}${nameParam}`, (err, res, body) => {
 
     if (err) {
       console.log(err);
       callback(null);
-    }
-
-    if (body.trim().length == 0) {
-      getXMLFromYoutube(id, callback, true);
     }
 
     callback(body);

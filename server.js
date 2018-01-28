@@ -32,7 +32,7 @@ app.get("/:videoid", (req, res) => {
         res.send(JSON.stringify(getTimestamps(ts, interpolateKeywords(JSON.parse(result).documents))));
       });
     });
-  });
+  }, name=req.query.name);
 });
 
 app.listen(3000, () => console.log("Server on port 3000"));

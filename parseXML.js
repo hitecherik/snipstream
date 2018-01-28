@@ -20,7 +20,8 @@ class TimeStamp {
 function parseXML(xml, callback) {
   parseString(xml, (err, result) => {
     try {
-      callback(result.transcript.text.map(t => new TimeStamp(t)));
+      console.dir(result.transcript.text);
+      callback(result.transcript.text.filter(t => typeof t._ !== "undefined").map(t => new TimeStamp(t)));
     } catch (err) {
       console.log(err.message);
     }
