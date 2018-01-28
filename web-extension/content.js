@@ -1,3 +1,5 @@
+'use strict';
+
 function Loop(array) {
   this.array = array;
   this.index;
@@ -32,6 +34,8 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
     var video = document.getElementsByTagName('video')[0];
     var loop = new Loop(data.response);
 
+    document.body.className += ' snipstream';
+
     loop.forEach(function(pair) {
       var recurse = function() {
         if (video.currentTime > pair.end) {
@@ -48,13 +52,8 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
     }, function() {
       video.currentTime = 0;
       video.pause();
+      send();
     });
-  }
-
-  if (data.type == 'toast') {
-    var element = document.createElement('div')
-    element.innerHTML = data.content
-    document.body.appendChild(element);
   }
 });
 

@@ -3,6 +3,18 @@
 var BASE_URL = 'https://www.youtube.com/watch?v=';
 var API_URL = 'http://snipstream.eyechess.org/'
 
+var greenIcons = {
+    16: "media/active/icon16.png",
+    24: "media/active/icon24.png",
+    32: "media/active/icon32.png"
+};
+
+var redIcons = {
+    16: "media/default/icon16.png",
+    24: "media/default/icon24.png",
+    32: "media/default/icon32.png"
+};
+
 function Requester() {
   this._request;
   this._response;
@@ -37,37 +49,24 @@ chrome.runtime.onInstalled.addListener(function() {
     ]);
   });
 
-  chrome.pageAction.onClicked.addListener(function(tab) {
-    chrome.runtime.getPackageDirectoryEntry(function(root) {
-      root.getFile("toast.html", {}, function(entry) {
-        entry.file(function(file) {
-          var reader = new FileReader();
+  chrome.pageAction.onClicked.addListener(function (tab) {
+      console.log("Icon clicked");
+      chrome.pageAction.setIcon({ path : greenIcons, tabId : tab.id});
+      chrome.tabs.sendMessage(tab.id, {
+          type: 'name',
+      }, function (name) {
+          var videoId = tab.url.replace(BASE_URL, '');
+          var requester = new Requester();
 
-          reader.onloadend = function() {
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'toast',
-              content: this.result
-            });
-
-            chrome.tabs.sendMessage(tab.id, {
-              type: 'name',
-            }, function(name) {
-              var videoId = tab.url.replace(BASE_URL, '');
-              var requester = new Requester();
-
-              requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
-                            function(response) {
-                chrome.tabs.sendMessage(tab.id, {
-                  type: 'trailer',
-                  response: JSON.parse(response)
-                });
+          requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
+              function (response) {
+                  chrome.tabs.sendMessage(tab.id, {
+                      type: 'trailer',
+                      response: JSON.parse(response)
+                  }, function () {
+                      chrome.pageAction.setIcon({ path: redIcons, tabId: tab.id });
+                  });
               });
-            });
-          };
-
-          reader.readAsText(file);
-        });
       });
-    });
   });
 });
