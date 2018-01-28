@@ -60,5 +60,5 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
 });
 
 var el = document.createElement('div');
-el.innerHTML = '<iframe width="560" height="315" style="margin-left: -280px; margin-top: -157.5px;" src="https://www.youtube.com/embed/nKW8Ndu7Mjw?controls=0&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+el.innerHTML = '<iframe width="840" height="472.5" style="margin-left: -420px; margin-top: -236.25px;" src="https://www.youtube.com/embed/nKW8Ndu7Mjw?controls=0&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 document.body.appendChild(el);
