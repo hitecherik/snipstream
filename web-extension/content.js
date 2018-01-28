@@ -1,5 +1,3 @@
-'use strict';
-
 function Loop(array) {
   this.array = array;
   this.index;
@@ -31,13 +29,8 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
   }
 
   if (data.type == 'trailer') {
+    var video = document.getElementsByTagName('video')[0];
     var loop = new Loop(data.response);
-
-    document.getElementsByTagName('video')[0].pause();
-    document.body.className += ' snipstream';
-
-    var video = el.firstChild.contentDocument.getElementsByTagName('video')[0];
-    video.play();
 
     loop.forEach(function(pair) {
       var recurse = function() {
@@ -57,8 +50,11 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
       video.pause();
     });
   }
+
+  if (data.type == 'toast') {
+    var element = document.createElement('div')
+    element.innerHTML = data.content
+    document.body.appendChild(element);
+  }
 });
 
-var el = document.createElement('div');
-el.innerHTML = '<iframe width="840" height="472.5" style="margin-left: -420px; margin-top: -236.25px;" src="https://www.youtube.com/embed/nKW8Ndu7Mjw?controls=0&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
-document.body.appendChild(el);

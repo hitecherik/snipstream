@@ -3,12 +3,6 @@
 var BASE_URL = 'https://www.youtube.com/watch?v=';
 var API_URL = 'http://snipstream.eyechess.org/'
 
-var greenIcons = {
-  16: "media/active/icon16.png",
-  24: "media/active/icon24.png",
-  32: "media/active/icon32.png"
-};
-
 function Requester() {
   this._request;
   this._response;
@@ -44,19 +38,34 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 
   chrome.pageAction.onClicked.addListener(function(tab) {
-    chrome.pageAction.setIcon({ path : greenIcons, tabId : tab.id});
+    chrome.runtime.getPackageDirectoryEntry(function(root) {
+      root.getFile("toast.html", {}, function(entry) {
+        entry.file(function(file) {
+          var reader = new FileReader();
 
-    chrome.tabs.sendMessage(tab.id, {
-      type: 'name',
-    }, function(name) {
-      var videoId = tab.url.replace(BASE_URL, '');
-      var requester = new Requester();
+          reader.onloadend = function() {
+            chrome.tabs.sendMessage(tab.id, {
+              type: 'toast',
+              content: this.result
+            });
 
-      requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
-                    function(response) {
-        chrome.tabs.sendMessage(tab.id, {
-          type: 'trailer',
-          response: JSON.parse(response)
+            chrome.tabs.sendMessage(tab.id, {
+              type: 'name',
+            }, function(name) {
+              var videoId = tab.url.replace(BASE_URL, '');
+              var requester = new Requester();
+
+              requester.get(API_URL + videoId + (name ? ('?name=' + name) : ''),
+                            function(response) {
+                chrome.tabs.sendMessage(tab.id, {
+                  type: 'trailer',
+                  response: JSON.parse(response)
+                });
+              });
+            });
+          };
+
+          reader.readAsText(file);
         });
       });
     });

@@ -19,7 +19,7 @@
   "content_scripts": [{
     "matches": ["https://www.youtube.com/watch?v=*"],
     "js": ["content.js"],
-    "css": ["styles.css"]
+    "css": ["toast.css"]
   }],
 
   "permissions": [
