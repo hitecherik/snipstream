@@ -6,9 +6,9 @@
 
   "page_action": {
     "default_icon": {
-      "16": "media/icon16.png",
-      "24": "media/icon24.png",
-      "32": "media/icon32.png"
+      "16": "media/default/icon16.png",
+      "24": "media/default/icon24.png",
+      "32": "media/default/icon32.png"
     }
   },
 
