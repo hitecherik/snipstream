@@ -2,10 +2,12 @@ function Loop(array) {
   this.array = array;
   this.index;
   this.func;
+  this.done;
 
-  this.forEach = function(func) {
+  this.forEach = function(func, done) {
     this.index = -1;
     this.func = func;
+    this.done = done;
     this.next();
   };
 
@@ -14,6 +16,8 @@ function Loop(array) {
 
     if (this.index < this.array.length) {
       this.func(this.array[this.index]);
+    } else {
+      this.done();
     }
   };
 };
@@ -41,6 +45,9 @@ chrome.runtime.onMessage.addListener(function(data, _, send) {
 
       video.currentTime = pair.start;
       recurse();
+    }, function() {
+      video.currentTime = 0;
+      video.pause();
     });
   }
 
